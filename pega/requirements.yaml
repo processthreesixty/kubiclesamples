@@ -1,0 +1,23 @@
+# Pega does NOT actively update this Cassandra dependency. To leverage Cassandra, you should:
+# * Update the cassandra 'version' value, or
+# * Disable deploying cassandra by setting 'cassandra.enabled' to false.
+dependencies:
+- name: cassandra
+  version: "0.13.3"
+  repository: https://charts.helm.sh/incubator
+  condition: cassandra.enabled
+- name: constellation
+  version: "0.0.1"
+  condition: constellation.enabled
+- name: hazelcast
+  version: "1.0.0"
+  condition: hazelcast.enabled
+- name: installer
+  version: "1.2.0"
+  condition: installer.enabled
+- name: pegasearch
+  version: "1.2.0"
+  condition: pegasearch.enabled
+- name: postgres
+  version: "1.2.0"
+  condition: postgres.enabled  

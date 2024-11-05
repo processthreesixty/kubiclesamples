@@ -1,0 +1,21 @@
+replicaCount: 1
+postgres:
+  name: postgres
+image:
+  repository: processthreesixty/pegadb
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5432
+
+persistence:
+  enabled: false
+  accessMode: ReadWriteOnce
+  mountPath: var/lib/postgresql-persist
+  size: 10Gi
+
+resources: {}
+serviceAccount:
+  create: true

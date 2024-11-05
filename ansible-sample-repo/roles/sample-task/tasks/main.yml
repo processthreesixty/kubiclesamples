@@ -1,0 +1,8 @@
+- name: Print a message
+  debug:
+    msg: "Ansible is working!"
+
+- name: Copy a sample file
+  copy:
+    src: sample.txt
+    dest: /tmp/sample.txt
