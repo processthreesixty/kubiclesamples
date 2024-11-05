@@ -1,1 +1,0 @@
-#postgresdb for pega
