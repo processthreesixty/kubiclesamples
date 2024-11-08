@@ -5,7 +5,7 @@ RELEASE_NAME=$1     # Helm release name passed as the first argument
 NAMESPACE=$2        # Namespace of the Helm release
 CURL_URL=$3         # URL to trigger with curl
 
-# Check for required arguments 
+# Check for required arguments
 if [ -z "$RELEASE_NAME" ] || [ -z "$NAMESPACE" ] || [ -z "$CURL_URL" ]; then
     echo "Usage: $0 <release_name> <namespace> <curl_url>"
     exit 1
