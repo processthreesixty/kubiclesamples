@@ -11,12 +11,12 @@ if [ -z "$RELEASE_NAME" ] || [ -z "$NAMESPACE" ] || [ -z "$CURL_URL" ]; then
     exit 1
 fi
 
-# Function to check pod status
+# Function to check pod status based on annotation
 check_pods_running() {
     echo "Checking pods for Helm release: $RELEASE_NAME in namespace: $NAMESPACE"
     
-    # Get pods associated with the Helm release
-    PODS=$(kubectl get pods -n "$NAMESPACE" -l "app.kubernetes.io/instance=$RELEASE_NAME" -o jsonpath='{.items[*].metadata.name}')
+    # Get pods associated with the Helm release by annotation
+    PODS=$(kubectl get pods -n "$NAMESPACE" -o json | jq -r ".items[] | select(.metadata.annotations[\"meta.helm.sh/release-name\"]==\"$RELEASE_NAME\") | .metadata.name")
 
     if [ -z "$PODS" ]; then
         echo "No pods found for release: $RELEASE_NAME"
@@ -35,10 +35,10 @@ check_pods_running() {
     return 0
 }
 
-# Function to get the load balancer's external IP
+# Function to get the load balancer's external IP based on annotation
 get_load_balancer_ip() {
     echo "Fetching Load Balancer External IP for Helm release: $RELEASE_NAME"
-    EXTERNAL_IP=$(kubectl get svc -n "$NAMESPACE" -l "app.kubernetes.io/instance=$RELEASE_NAME" -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')
+    EXTERNAL_IP=$(kubectl get svc -n "$NAMESPACE" -o json | jq -r ".items[] | select(.metadata.annotations[\"meta.helm.sh/release-name\"]==\"$RELEASE_NAME\") | .status.loadBalancer.ingress[0].ip")
     if [ -z "$EXTERNAL_IP" ]; then
         echo "Load Balancer External IP not available yet."
         return 1
@@ -47,7 +47,7 @@ get_load_balancer_ip() {
     return 0
 }
 
-# Wait for pods to be in Running state
+# Wait for pods to be in Running state and Load Balancer IP to be available
 while true; do
     if check_pods_running && get_load_balancer_ip; then
         echo "Triggering curl to URL: $CURL_URL with Load Balancer IP in the body"
