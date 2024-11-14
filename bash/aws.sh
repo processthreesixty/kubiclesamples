@@ -17,4 +17,8 @@ export AWS_REGION
 # Simulate user input for aws configure
 echo -e "$AWS_ACCESS_KEY_ID\n$AWS_SECRET_ACCESS_KEY\n$AWS_REGION\njson" | aws configure
 
-aws eks update-kubeconfig
+# Update kubeconfig for the EKS cluster
+aws eks update-kubeconfig --name "$AWS_CLUSTER_NAME" --region "$AWS_REGION"
+
+# Optionally, check the context of the kubeconfig
+kubectl config current-context
