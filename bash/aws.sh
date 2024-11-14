@@ -1,12 +1,24 @@
 #!/bin/sh
 
-# Loop through and export environment variables passed
-echo "Exporting environment variables:"
-for env_var in "$@"; do
-  export $env_var
-  echo "Exported: $env_var"
-done
+# Check if AWS Access Key, Secret Key, and Region are passed as arguments
+if [ "$#" -ne 3 ]; then
+  echo "Usage: $0 <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY> <AWS_REGION>"
+  exit 1
+fi
 
-# Optionally, print all environment variables after export
-echo "All environment variables:"
-env
+# Set the AWS Access Key ID, Secret Access Key, and Region from arguments
+AWS_ACCESS_KEY_ID="$1"
+AWS_SECRET_ACCESS_KEY="$2"
+AWS_REGION="$3"
+
+# Export the AWS environment variables
+export AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY
+export AWS_REGION
+
+
+# Simulate user input for aws configure
+echo -e "$AWS_ACCESS_KEY_ID\n$AWS_SECRET_ACCESS_KEY\n$AWS_REGION\njson" | aws configure
+
+# Optionally, confirm the configuration by running an AWS CLI command
+aws s3 ls
