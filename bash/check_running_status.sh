@@ -8,41 +8,20 @@ RELEASE_NAME=$1     # Helm release name passed as the first argument
 NAMESPACE=$2        # Namespace of the Helm release
 CURL_URL=$3         # URL to trigger with curl
 
-#!/bin/bash
-
-# Check if Helm is installed by using `which`
-HELM_PATH=$(which helm)
-
-# Verify if `which helm` returned a valid path
-if [ -n "$HELM_PATH" ]; then
-    echo "Helm is installed at: $HELM_PATH"
-else
-    echo "Helm is not installed or not in PATH. Exiting script."
+# Check for required arguments
+if [ -z "$RELEASE_NAME" ] || [ -z "$NAMESPACE" ] || [ -z "$CURL_URL" ]; then
+    echo "Usage: $0 <release_name> <namespace> <curl_url>"
     exit 1
 fi
 
-# Proceed with Helm commands now that we know it's installed
-echo "Proceeding with Helm commands..."
-
-# Example Helm command
-helm version
-
-
-# Function to check if the Helm release exists and print the status output
+# Function to check if the Helm release exists
 check_release_exists() {
     echo "Checking if Helm release $RELEASE_NAME exists in namespace $NAMESPACE..."
-    RELEASE_STATUS=$(helm status "$RELEASE_NAME" -n "$NAMESPACE" 2>&1)
-    
-    if [ $? -ne 0 ]; then
-        echo "Helm release $RELEASE_NAME does not exist in namespace $NAMESPACE."
-        echo "helm status command output:"
-        echo "$RELEASE_STATUS"
+    if ! helm status "$RELEASE_NAME" -n "$NAMESPACE" > /dev/null 2>&1; then
+        echo "Helm release $RELEASE_NAME does not exist in namespace $NAMESPACE. Exiting."
         exit 0
-    else
-        echo "Helm release $RELEASE_NAME exists."
-        echo "Helm status output:"
-        echo "$RELEASE_STATUS"
     fi
+    echo "Helm release $RELEASE_NAME exists."
 }
 
 # Function to check pod status based on label
