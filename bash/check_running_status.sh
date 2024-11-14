@@ -10,28 +10,22 @@ CURL_URL=$3         # URL to trigger with curl
 
 #!/bin/bash
 
-# Check if Helm is installed
-if command -v helm &> /dev/null; then
-    echo "Helm is installed."
-    HELM_PATH=$(which helm)
-    echo "Helm is located at: $HELM_PATH"
+# Check if Helm is installed by using `which`
+HELM_PATH=$(which helm)
+
+# Verify if `which helm` returned a valid path
+if [ -n "$HELM_PATH" ]; then
+    echo "Helm is installed at: $HELM_PATH"
 else
-    echo "Helm is not installed or not in PATH."
+    echo "Helm is not installed or not in PATH. Exiting script."
     exit 1
 fi
 
-# Add Helm to PATH if it's not already there
-if [[ ":$PATH:" != *":$(dirname "$HELM_PATH"):"* ]]; then
-    export PATH="$PATH:$(dirname "$HELM_PATH")"
-    echo "Helm path added to PATH."
-else
-    echo "Helm path is already in PATH."
-fi
+# Proceed with Helm commands now that we know it's installed
+echo "Proceeding with Helm commands..."
 
-# Confirm Helm is accessible
-echo "Current Helm version:"
+# Example Helm command
 helm version
-
 
 
 # Function to check if the Helm release exists and print the status output
