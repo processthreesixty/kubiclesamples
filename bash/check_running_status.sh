@@ -14,6 +14,15 @@ if [ -z "$RELEASE_NAME" ] || [ -z "$NAMESPACE" ] || [ -z "$CURL_URL" ]; then
     exit 1
 fi
 
+# Check if Helm is installed
+if command -v helm &> /dev/null; then
+    echo "Helm is installed."
+else
+    echo "Helm is not installed or not in PATH."
+    exit 1
+fi
+
+
 # Function to check if the Helm release exists and print the status output
 check_release_exists() {
     echo "Checking if Helm release $RELEASE_NAME exists in namespace $NAMESPACE..."
