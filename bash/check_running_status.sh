@@ -125,10 +125,8 @@ while true; do
 
     if check_pods_running && get_load_balancer_ip && check_external_address; then
         echo "Triggering curl to URL: $CURL_URL with Load Balancer IP/Hostname in the body"
-        curl -X POST -H "Content-Type: application/json" -d "{
-            \"loadBalancerIP\": \"$EXTERNAL_IP\",
-            \"loadBalancerHostname\": \"$EXTERNAL_HOSTNAME\"
-        }" "$CURL_URL"
+         export EXTERNAL_IP
+         export EXTERNAL_HOSTNAME
         exit 0
     fi
 
