@@ -19,6 +19,3 @@ export AWS_REGION
 
 # Simulate user input for aws configure
 echo -e "$AWS_ACCESS_KEY_ID\n$AWS_SECRET_ACCESS_KEY\n$AWS_REGION\njson" | aws configure
-
-# Optionally, confirm the configuration by running an AWS CLI command
-aws s3 ls
