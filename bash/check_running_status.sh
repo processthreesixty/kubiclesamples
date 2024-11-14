@@ -14,14 +14,21 @@ if [ -z "$RELEASE_NAME" ] || [ -z "$NAMESPACE" ] || [ -z "$CURL_URL" ]; then
     exit 1
 fi
 
-# Function to check if the Helm release exists
+# Function to check if the Helm release exists and print the status output
 check_release_exists() {
     echo "Checking if Helm release $RELEASE_NAME exists in namespace $NAMESPACE..."
-    if ! helm status "$RELEASE_NAME" -n "$NAMESPACE" > /dev/null 2>&1; then
-        echo "Helm release $RELEASE_NAME does not exist in namespace $NAMESPACE. Exiting."
+    RELEASE_STATUS=$(helm status "$RELEASE_NAME" -n "$NAMESPACE" 2>&1)
+    
+    if [ $? -ne 0 ]; then
+        echo "Helm release $RELEASE_NAME does not exist in namespace $NAMESPACE."
+        echo "helm status command output:"
+        echo "$RELEASE_STATUS"
         exit 0
+    else
+        echo "Helm release $RELEASE_NAME exists."
+        echo "Helm status output:"
+        echo "$RELEASE_STATUS"
     fi
-    echo "Helm release $RELEASE_NAME exists."
 }
 
 # Function to check pod status based on label
