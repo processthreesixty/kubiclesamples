@@ -16,16 +16,6 @@ fi
 
 
 
-
-# Check if the directory exists
-if [ -d "$HELM_PATH" ]; then
-    echo "Adding $HELM_PATH to PATH"
-    export PATH="$HELM_PATH:$PATH"
-else
-    echo "Helm path $HELM_PATH does not exist. Exiting script."
-    exit 1
-fi
-
 # Now you can use helm directly without needing the full path
 echo "Running Helm version..."
 helm version
