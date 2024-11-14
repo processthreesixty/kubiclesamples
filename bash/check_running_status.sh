@@ -8,19 +8,30 @@ RELEASE_NAME=$1     # Helm release name passed as the first argument
 NAMESPACE=$2        # Namespace of the Helm release
 CURL_URL=$3         # URL to trigger with curl
 
-# Check for required arguments
-if [ -z "$RELEASE_NAME" ] || [ -z "$NAMESPACE" ] || [ -z "$CURL_URL" ]; then
-    echo "Usage: $0 <release_name> <namespace> <curl_url>"
-    exit 1
-fi
+#!/bin/bash
 
 # Check if Helm is installed
 if command -v helm &> /dev/null; then
     echo "Helm is installed."
+    HELM_PATH=$(which helm)
+    echo "Helm is located at: $HELM_PATH"
 else
     echo "Helm is not installed or not in PATH."
     exit 1
 fi
+
+# Add Helm to PATH if it's not already there
+if [[ ":$PATH:" != *":$(dirname "$HELM_PATH"):"* ]]; then
+    export PATH="$PATH:$(dirname "$HELM_PATH")"
+    echo "Helm path added to PATH."
+else
+    echo "Helm path is already in PATH."
+fi
+
+# Confirm Helm is accessible
+echo "Current Helm version:"
+helm version
+
 
 
 # Function to check if the Helm release exists and print the status output
