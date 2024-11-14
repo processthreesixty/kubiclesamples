@@ -15,16 +15,7 @@ if [ -z "$RELEASE_NAME" ] || [ -z "$NAMESPACE" ] || [ -z "$CURL_URL" ]; then
 fi
 
 
-#!/bin/bash
 
-# Parse command-line arguments for HELM_PATH
-while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        --HELM_PATH) HELM_PATH="$2"; shift ;;
-        *) echo "Unknown option: $1"; exit 1 ;;
-    esac
-    shift
-done
 
 # Check if the directory exists
 if [ -d "$HELM_PATH" ]; then
