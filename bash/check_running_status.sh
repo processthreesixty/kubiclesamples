@@ -6,11 +6,10 @@ set -x
 # Variables
 RELEASE_NAME=$1     # Helm release name passed as the first argument
 NAMESPACE=$2        # Namespace of the Helm release
-CURL_URL=$3         # URL to trigger with curl
 
 # Check for required arguments
-if [ -z "$RELEASE_NAME" ] || [ -z "$NAMESPACE" ] || [ -z "$CURL_URL" ]; then
-    echo "Usage: $0 <release_name> <namespace> <curl_url>"
+if [ -z "$RELEASE_NAME" ] || [ -z "$NAMESPACE" ]; then
+    echo "Usage: $0 <release_name> <namespace>"
     exit 1
 fi
 
@@ -20,8 +19,6 @@ fi
 echo "Running Helm version..."
 helm version
 
-# Example Helm command
-# helm install <release-name> <chart>
 
 
 
@@ -124,9 +121,9 @@ while true; do
     echo "Starting check for pods, Load Balancer IP/Hostname, and response from the application..."
 
     if check_pods_running && get_load_balancer_ip && check_external_address; then
-        echo "Triggering curl to URL: $CURL_URL with Load Balancer IP/Hostname in the body"
-         export EXTERNAL_IP
-         export EXTERNAL_HOSTNAME
+        echo "print the variables"
+         echo --var "INSTANCEIP="$EXTERNAL_IP
+         echo --var "INSTANCEURL="$EXTERNAL_HOSTNAME
         exit 0
     fi
 
