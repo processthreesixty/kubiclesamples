@@ -22,3 +22,8 @@ variable "node_count" {
   description = "The number of nodes in the node pool"
   default     = 1
 }
+
+variable "google_credentials_file" {
+  description = "/home/kubicle/.config/gcloud/application_default_credentials.json"
+  type        = string
+}
