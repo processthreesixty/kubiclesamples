@@ -6,7 +6,6 @@ terraform {
   backend "gcs" {
     bucket  = "terraformgke"
     prefix  = "terraform/state"
-    project = var.project_id
   }
 }
 # Enable the Kubernetes Engine API
