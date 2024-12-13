@@ -5,7 +5,7 @@ provider "google" {
 }
 terraform {
   backend "gcs" {
-    bucket  = "terraform-pega"
+    bucket  = "terraformgke"
     prefix  = "terraform/gke/state"
   }
 }
