@@ -1,12 +1,12 @@
 provider "google" {
-  credentials = file(var.google_credentials_file)
   project = var.project_id
   region  = var.region
 }
 terraform {
   backend "gcs" {
     bucket  = "terraformgke"
-    prefix  = "terraform/gke/state"
+    prefix  = "terraform/state"
+    project = var.project_id
   }
 }
 # Enable the Kubernetes Engine API
