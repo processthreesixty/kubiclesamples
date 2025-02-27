@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "kubernetes" {
-  config_path = "/etc/kubernetes/admin.conf"
+  config_path = "~/.kube/config"
 }
 
 # Namespace
