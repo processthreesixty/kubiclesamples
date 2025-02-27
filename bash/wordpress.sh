@@ -1,0 +1,1 @@
+helm install my-wordpress bitnami/wordpress --set wordpressPassword=my-password --set mysqlRootPassword=my-root-password --set mysqlPassword=my-mysql-password
