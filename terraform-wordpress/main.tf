@@ -113,7 +113,7 @@ resource "kubernetes_stateful_set" "mysql" {
           }
 
           port {
-            container_port = 3306
+            container_port = 4306
           }
 
           volume_mount {
@@ -163,8 +163,8 @@ resource "kubernetes_service" "mysql" {
     }
 
     port {
-      port        = 3306
-      target_port = 3306
+      port        = 4306
+      target_port = 4306
     }
   }
 }
